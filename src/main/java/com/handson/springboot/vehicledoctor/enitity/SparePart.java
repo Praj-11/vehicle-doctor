@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "spare_parts")
+@Table(name = "spare_part")
 public class SparePart {
 	
 	@Id
