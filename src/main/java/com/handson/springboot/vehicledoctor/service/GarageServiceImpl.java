@@ -1,12 +1,10 @@
 package com.handson.springboot.vehicledoctor.service;
 
-<<<<<<< Updated upstream
 import java.time.LocalDate;
 import java.util.Date;
-=======
+
 import java.util.Date;
 import java.util.List;
->>>>>>> Stashed changes
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collector;
