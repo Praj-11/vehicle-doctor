@@ -1,6 +1,9 @@
 package com.handson.springboot.vehicledoctor.enitity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -56,6 +60,9 @@ public class Mechanic {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "employer_id")
 	private Garage employer;
+	
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, mappedBy = "mechanic")
+	private List<OrderTable> orders;
 
 	public Long getId() {
 		return id;
@@ -136,7 +143,15 @@ public class Mechanic {
 	public void setEmployer(Garage employer) {
 		this.employer = employer;
 	}
-	
+
+	public List<OrderTable> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<OrderTable> orders) {
+		this.orders = orders;
+	}
+
 	@Override
 	public String toString() {
 		return "Mechanic [id=" + id + ", name=" + name + ", phoneNumber=" + phoneNumber + ", address=" + address

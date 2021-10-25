@@ -1,8 +1,15 @@
 package com.handson.springboot.vehicledoctor.service;
 
+<<<<<<< Updated upstream
 import java.time.LocalDate;
 import java.util.Date;
+=======
+import java.util.Date;
+import java.util.List;
+>>>>>>> Stashed changes
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collector;
 
 import javax.servlet.http.HttpServletResponse;
 import org.hibernate.engine.query.spi.ReturnMetadata;
@@ -13,6 +20,8 @@ import org.springframework.stereotype.Service;
 import com.handson.springboot.vehicledoctor.dao.GarageRepository;
 import com.handson.springboot.vehicledoctor.enitity.Garage;
 import com.handson.springboot.vehicledoctor.enitity.Mechanic;
+
+import ch.qos.logback.core.filter.Filter;
 
 @Service
 public class GarageServiceImpl implements GarageService{
@@ -103,5 +112,42 @@ public class GarageServiceImpl implements GarageService{
 		
 		return "Invalid Mechanic Id";
 	}
+
+	@Override
+	public Optional<Garage> findByCity(String city) {
+		
+		System.out.println("Garage Details By City: " + garageRepository.findByCity(city).size());
+		
+		return Optional.of(garageRepository.findByCity(city).get(0));
+		
+	}
+
+	@Override
+	public Optional<Mechanic> findMechanicByAvailability(Long id, Date appointmentDate) {
+		
+		Garage tempGarage = getGarageOwner(id).get();
+		
+		Date tempAppointmentDate = appointmentDate;
+		
+		tempAppointmentDate.setHours(tempAppointmentDate.getHours()-3);
+		
+		System.out.println("Mechanic Available: " + tempGarage.getMechanics());
+		
+		Optional<Mechanic> tempMechanic = tempGarage.getMechanics().stream().filter((temp) -> temp.getOrders().isEmpty()).findFirst();
+		
+		if (tempMechanic.isEmpty()) {
+			
+			tempMechanic = tempGarage.getMechanics().stream()
+					.filter(
+							(temp) -> temp.getOrders().stream()
+							.filter((temp1) -> temp1.getStatus().equals('p') || temp1.getStatus().equals('o'))
+							.allMatch((temp2) -> temp2.getOrderAppointmentDate().before(tempAppointmentDate))
+							).findFirst();
+		}
+		
+		return tempMechanic;
+	}
+	
+	
 
 }
