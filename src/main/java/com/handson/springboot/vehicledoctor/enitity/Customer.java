@@ -2,7 +2,6 @@ package com.handson.springboot.vehicledoctor.enitity;
 
 import java.util.Set;
 
-import javax.annotation.Generated;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,37 +14,37 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "garage")
-public class Garage {
-
+@Table(name = "customer")
+public class Customer {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "garage_name")
-	private String garageName;
+	@Column(name = "name")
+	private String name;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "address_id", referencedColumnName = "id")
+	private Address address;
 	
 	@Column(name = "phone_number")
 	private Long phoneNumber;
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "address_id")
-	private Address address;
-	
-	@Column(name = "email")
+
+	@Column(name = "email_id")
 	private String email;
 	
 	@Column(name = "password")
 	private String password;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employer")
-	private Set<Mechanic> mechanics;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "car_id", referencedColumnName = "id")
+	private CarDetail carDetails;
 
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, mappedBy = "garage")
+	@OneToMany(cascade =  CascadeType.ALL, mappedBy = "customer")
 	private Set<OrderTable> orders;
 	
-
 	public Long getId() {
 		return id;
 	}
@@ -54,12 +53,20 @@ public class Garage {
 		this.id = id;
 	}
 
-	public String getGarageName() {
-		return garageName;
+	public String getName() {
+		return name;
 	}
 
-	public void setGarageName(String garageName) {
-		this.garageName = garageName;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	public Long getPhoneNumber() {
@@ -68,14 +75,6 @@ public class Garage {
 
 	public void setPhoneNumber(Long phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-	
-	public Address getAddress() {
-		return address;
-	}
-
-	public void setAddress(Address address) {
-		this.address = address;
 	}
 
 	public String getEmail() {
@@ -94,15 +93,14 @@ public class Garage {
 		this.password = password;
 	}
 
-	public Set<Mechanic> getMechanics() {
-		return mechanics;
+	public CarDetail getCarDetails() {
+		return carDetails;
 	}
 
-	public void setMechanics(Set<Mechanic> mechanics) {
-		this.mechanics = mechanics;
+	public void setCarDetails(CarDetail carDetails) {
+		this.carDetails = carDetails;
 	}
 	
-
 	public Set<OrderTable> getOrders() {
 		return orders;
 	}
@@ -113,7 +111,8 @@ public class Garage {
 
 	@Override
 	public String toString() {
-		return "Garage [id=" + id + ", garageName=" + garageName + ", phoneNumber=" + phoneNumber + ", address="
-				+ address + ", email=" + email + ", mechanics=" + mechanics + "]";
+		return "Customer [id=" + id + ", name=" + name + ", address=" + address + ", phoneNumber=" + phoneNumber
+				+ ", email=" + email + ", carDetails=" + carDetails + "]";
 	}
+
 }
