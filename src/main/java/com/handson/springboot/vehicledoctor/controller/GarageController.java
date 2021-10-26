@@ -18,8 +18,6 @@ public class GarageController {
 	@Autowired
 	private GarageService garageService;
 	
-	@Autowired
-	private MechanicService mechanicService;
 	@GetMapping("/")
 	public String getHello() {
 		

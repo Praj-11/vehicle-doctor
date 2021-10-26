@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.handson.springboot.vehicledoctor.dao.MechanicRepository;
+import com.handson.springboot.vehicledoctor.enitity.Garage;
 import com.handson.springboot.vehicledoctor.enitity.Mechanic;
 
 @Service
@@ -14,6 +15,23 @@ public class MechanicServiceImpl implements MechanicService{
 
 	@Autowired
 	private MechanicRepository mechanicRepository;
+	
+	
+	
+	@Override
+	public Mechanic login(String email, String password) {
+		
+		if (!mechanicRepository.findByEmail(email).isEmpty()) {
+			
+			
+			Mechanic tempMechanic = mechanicRepository.findByEmail(email).get(0);
+			
+			return (tempMechanic.getPassword().equals(password)) ? tempMechanic : null;
+			
+		}
+		
+		return null;
+	}
 	
 	@Override
 	public void addMechanic(Mechanic theMechanic) {
