@@ -1,9 +1,12 @@
 package com.handson.springboot.vehicledoctor.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.handson.springboot.vehicledoctor.dao.CustomerRepository;
 import com.handson.springboot.vehicledoctor.enitity.Customer;
+import com.handson.springboot.vehicledoctor.enitity.Mechanic;
 
 public class CustomerServiceImp implements CustomerService {
 	
@@ -32,6 +35,32 @@ public class CustomerServiceImp implements CustomerService {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public Optional<Customer> findById(Long id) {
+		return customerRepository.findById(id);
+	}
+
+	@Override
+	public String update(Customer cust) {
+		customerRepository.save(cust);
+		return "Customer Updated successfully with id:"+cust.getId();
+       
+	}
+    @Override
+	public String deleteById(Long id) {
+		Optional<Customer> tempCustomer = customerRepository.findById(id);
+
+		if (tempCustomer.isEmpty()){
+
+			return "Customer not found";
+		}
+
+		customerRepository.deleteById(id);
+
+		return "Customer Deleted: " + tempCustomer;
+		
 	}
 	
 	

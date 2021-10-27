@@ -18,4 +18,6 @@ public interface MechanicService {
 	public boolean existsById(Long theId, Mechanic theMechanic);
 
 	public Mechanic login(String email, String password);
+	
+	public Orders viewOrders(Long theId);
 }

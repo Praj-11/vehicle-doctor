@@ -1,6 +1,10 @@
 package com.handson.springboot.vehicledoctor.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.criteria.Order;
 
 import org.apache.el.parser.AstFalse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +20,8 @@ public class MechanicServiceImpl implements MechanicService{
 	@Autowired
 	private MechanicRepository mechanicRepository;
 	
-	
+	@Autowired 
+	private OrderRepository orderRepository;
 	
 	@Override
 	public Mechanic login(String email, String password) {
@@ -72,6 +77,19 @@ public class MechanicServiceImpl implements MechanicService{
 		
 		return false;
 		
+	}
+
+	@Override
+	public List<Order> viewOrders(Long theId) {
+		List<Order> li= orderRepository.findAll();
+		List<Order> tempList= new ArrayList<Order>();
+		for(Order order :li) {
+			if(order.getMechanicId()==theId) {
+				tempList.add(order);
+			}
+		}
+		
+		return tempList;
 	}
 
 
