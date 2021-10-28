@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -75,6 +76,7 @@ public class OrderTable {
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "spare_parts_used")
+//	 @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
 	private List<SparePart> sparePartsUsed;
 
 	public Long getId() {
@@ -176,18 +178,18 @@ public class OrderTable {
 	public List<SparePart> getSparePartsUsed() {
 		return sparePartsUsed;
 	}
-
+	
 	public void setSparePartsUsed(List<SparePart> sparePartsUsed) {
 		this.sparePartsUsed = sparePartsUsed;
 	}
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", orderTrackingNumber=" + orderTrackingNumber + ", orderDescription="
+		return "\nOrder [id=" + id + ", orderTrackingNumber=" + orderTrackingNumber + ", orderDescription="
 				+ orderDescription + ", billAmount=" + billAmount + ", orderCreated=" + orderCreated
 				+ ", orderCompleted=" + orderCompleted + ", orderAppointmentDate=" + orderAppointmentDate + ", status="
 				+ status + ", paymentStatus=" + paymentStatus + ", customer=" + customer.getName() + ", garage=" + garage.getGarageName()
-				+ ", mechanic=" + mechanic.getName() + ", sparePartsUsed=" + sparePartsUsed + "]";
+				+ ", mechanic=" + mechanic.getName() +"]";
 	}
 }
 

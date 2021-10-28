@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collector;
-
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 import org.hibernate.engine.query.spi.ReturnMetadata;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import com.handson.springboot.vehicledoctor.dao.GarageRepository;
 import com.handson.springboot.vehicledoctor.enitity.Garage;
 import com.handson.springboot.vehicledoctor.enitity.Mechanic;
-
+import com.handson.springboot.vehicledoctor.enitity.OrderTable;
 
 import ch.qos.logback.core.filter.Filter;
 
@@ -121,9 +121,9 @@ public class GarageServiceImpl implements GarageService{
 	@Override
 	public Optional<Garage> findByCity(String city) {
 		
-		System.out.println("Garage Details By City: " + garageRepository.findByCity(city).size());
+		List<Garage> temp = garageRepository.findByCity(city);
 		
-		return Optional.of(garageRepository.findByCity(city).get(0));
+		return (temp.size() > 0) ? Optional.of(temp.get(0)) : Optional.empty();
 		
 	}
 
@@ -138,7 +138,20 @@ public class GarageServiceImpl implements GarageService{
 		
 		System.out.println("Mechanic Available: " + tempGarage.getMechanics());
 		
-		Optional<Mechanic> tempMechanic = tempGarage.getMechanics().stream().filter((temp) -> temp.getOrders().isEmpty()).findFirst();
+		Optional<Mechanic> tempMechanic = tempGarage.getMechanics().stream().filter((temp) -> {
+			
+			if (temp.getOrders().isEmpty()) {
+				
+				return true;
+			}
+			List<OrderTable> tempOrder = temp.getOrders().stream().filter((temp1) -> temp1.getStatus().equals('c')).collect(Collectors.toList());
+				
+			if (tempOrder.size() == temp.getOrders().size()) {
+				return true;
+			}
+			return false;
+				
+		}).findFirst();
 		
 		if (tempMechanic.isEmpty()) {
 			
@@ -152,8 +165,25 @@ public class GarageServiceImpl implements GarageService{
 		
 		return tempMechanic;
 	}
-	
-	
 
+	@Override
+	public String findMechanicStatus(Long theId) {
+		// TODO Auto-generated method stub
+		Optional<Mechanic> tempMechanic = mechanicService.findById(theId);
+		
+		
+		if(!tempMechanic.isPresent()) {
+			return "Mechanic is not found, Please provide valid id !!!";
+		} else if(tempMechanic.get().getOrders().size() == 0) {
+			return "Mechanic Status: \n" + tempMechanic.get().getName()+ " is Available.";
+		}
+		return tempMechanic.get().getOrders().get(0).getStatus().toString().equalsIgnoreCase("c") ? "Mechanic Status: \n" + tempMechanic.get().getName()+ " is Available.":"Mechanic Status: \n" + tempMechanic.get().getName()+ " is busy in repairing a vehicle of " +tempMechanic.get().getOrders().get(0).getCustomer().getName() +". His appointment date/time is : "+tempMechanic.get().getOrders().get(0).getOrderAppointmentDate();
+	
+//		if(tempMechanic.get().getOrders().get(0).getStatus().toString().equalsIgnoreCase("c")) {
+//			return  "Mechanic Name:" + tempMechanic.get().getName()+ " is Available.";
+//		} 
+//		return  "Mechanic Status: \n" + tempMechanic.get().getName()+ " is busy in repairing a vehicle of " +tempMechanic.get().getOrders().get(0).getCustomer().getName() +". His appointment date/time is : "+tempMechanic.get().getOrders().get(0).getOrderAppointmentDate();
+		
+	}
 
 }

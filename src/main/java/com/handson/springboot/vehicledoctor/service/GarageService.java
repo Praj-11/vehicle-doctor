@@ -24,4 +24,6 @@ public interface GarageService {
 
 	public Optional<Mechanic> findMechanicByAvailability(Long id, Date appointmentDate);
 
+	public String findMechanicStatus(Long theId);
+
 }

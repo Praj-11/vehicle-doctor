@@ -1,5 +1,6 @@
 package com.handson.springboot.vehicledoctor.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.handson.springboot.vehicledoctor.enitity.Customer;
@@ -12,5 +13,9 @@ public interface CustomerService {
 	Customer findById(Long theId);
 
 	String addCustomer(Customer theCustomer);
+
+	List<OrderTable> findAllOrders(Long theId);
+
+	OrderTable findOrderByTrackingNumber(Long theId, String trackingNumber);
 
 }
