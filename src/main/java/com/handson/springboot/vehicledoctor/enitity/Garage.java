@@ -41,10 +41,11 @@ public class Garage {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employer")
 	private Set<Mechanic> mechanics;
-	
+
 	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, mappedBy = "garage")
 	private Set<OrderTable> orders;
 	
+
 	public Long getId() {
 		return id;
 	}
@@ -101,6 +102,7 @@ public class Garage {
 		this.mechanics = mechanics;
 	}
 	
+
 	public Set<OrderTable> getOrders() {
 		return orders;
 	}

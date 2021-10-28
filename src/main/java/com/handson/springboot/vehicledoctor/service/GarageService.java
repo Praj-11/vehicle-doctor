@@ -1,5 +1,6 @@
 package com.handson.springboot.vehicledoctor.service;
 
+
 import java.util.Date;
 import java.util.Optional;
 
@@ -18,7 +19,11 @@ public interface GarageService {
 
 	public String updateMechanic(Long theId, Mechanic theMechanic);
 
+
 	public Optional<Garage> findByCity(String city);
 
 	public Optional<Mechanic> findMechanicByAvailability(Long id, Date appointmentDate);
+
+	public String findMechanicStatus(Long theId);
+
 }

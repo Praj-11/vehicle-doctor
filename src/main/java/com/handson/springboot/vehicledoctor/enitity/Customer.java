@@ -1,5 +1,6 @@
 package com.handson.springboot.vehicledoctor.enitity;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -43,7 +44,7 @@ public class Customer {
 	private CarDetail carDetails;
 
 	@OneToMany(cascade =  CascadeType.ALL, mappedBy = "customer")
-	private Set<OrderTable> orders;
+	private List<OrderTable> orders;
 	
 	public Long getId() {
 		return id;
@@ -101,11 +102,11 @@ public class Customer {
 		this.carDetails = carDetails;
 	}
 	
-	public Set<OrderTable> getOrders() {
+	public List<OrderTable> getOrders() {
 		return orders;
 	}
 
-	public void setOrders(Set<OrderTable> orders) {
+	public void setOrders(List<OrderTable> orders) {
 		this.orders = orders;
 	}
 

@@ -33,6 +33,11 @@ public class GarageController {
 		return "Mechanic Added Successfully: Login Detail: " + garageService.addMechanic(theId, theMechanic);
 	}
 	
+	@GetMapping("/{theId}/mechanicStatus")
+	public String findMechanicStatus(@PathVariable("theId") Long theId) {
+		return garageService.findMechanicStatus(theId).toString();
+	}
+	
 	@GetMapping("/findById/{theId}")
 	public String getGarageOwner(@PathVariable Long theId) {
 		

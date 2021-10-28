@@ -1,5 +1,7 @@
 package com.handson.springboot.vehicledoctor.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,4 +40,18 @@ public class CustomerController {
 		return customerService.placeOrder(order, theId);
 		
 	}
+	
+	@GetMapping("/{theId}/orders")
+	public String findAllOrders(@PathVariable("theId") Long theId) {
+		List<OrderTable> temp = customerService.findAllOrders(theId);
+		return temp.toString();			
+	}
+	
+	@GetMapping("/{theId}/orders/trackingOrderId/{theOrderTrackingNumber}") 
+		public String findOrderByTrackingId(@PathVariable("theId") Long theId,@PathVariable("theOrderTrackingNumber") String trackingNumber) {
+			return customerService.findOrderByTrackingNumber(theId,trackingNumber).toString();
+		}
+		
+		
+	
 }
