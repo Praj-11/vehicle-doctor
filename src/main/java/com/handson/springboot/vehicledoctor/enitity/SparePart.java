@@ -20,13 +20,11 @@ public class SparePart {
 	@Column(name = "part_name")
 	private String partName;
 	
-
-	@Column(name = "quantity")
-	private Integer quantity;
-	
-
 	@Column(name = "price")
 	private Double price;
+	
+	private Integer quantity;
+	
 
 
 	public Long getId() {

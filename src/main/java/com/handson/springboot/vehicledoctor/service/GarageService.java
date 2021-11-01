@@ -26,4 +26,6 @@ public interface GarageService {
 
 	public String findMechanicStatus(Long theId);
 
+	public String findAllOrders(Long theId);
+
 }

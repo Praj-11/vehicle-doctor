@@ -23,8 +23,7 @@ public class GarageController {
 	@GetMapping("/")
 	public String getHello() {
 		
-		String tempString = "Current Supported Endpoints: \n\n /findById/{theId}: Shows garage details \n /{theId}/addMechanic: Add Mechanic \n /{theId}/updateMechanic: Update Mechanic Info \n /{theGarageId}/deleteMechanic/{theMechanicId}: Delete Mechanic Details";
-		return tempString;
+		return "Current Supported Endpoints: \n\n /findById/{theId}: Shows garage details \n /{theId}/addMechanic: Add Mechanic \n /{theId}/updateMechanic: Update Mechanic Info \n /{theGarageId}/deleteMechanic/{theMechanicId}: Delete Mechanic Details";
 	}
 	
 	@PostMapping("/{theId}/addMechanic")
@@ -35,7 +34,7 @@ public class GarageController {
 	
 	@GetMapping("/{theId}/mechanicStatus")
 	public String findMechanicStatus(@PathVariable("theId") Long theId) {
-		return garageService.findMechanicStatus(theId).toString();
+		return garageService.findMechanicStatus(theId);
 	}
 	
 	@GetMapping("/findById/{theId}")
@@ -56,5 +55,11 @@ public class GarageController {
 
 		return garageService.deleteMechanic(theMechanicId);
 
+	}
+	
+	@GetMapping("/{theId}/orders")
+	public String findAllOrders(@PathVariable Long theId) {
+		
+		return garageService.findAllOrders(theId);
 	}
 }

@@ -1,4 +1,4 @@
-package com.handson.springboot.vehicledoctor.dao;
+package com.handson.springboot.vehicledoctor.repository;
 
 import java.util.List;
 

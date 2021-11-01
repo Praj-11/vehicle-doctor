@@ -9,7 +9,7 @@ import com.handson.springboot.vehicledoctor.enitity.SparePart;
 
 public interface MechanicService {
 	
-	public void addMechanic(Mechanic theMechanic);
+	public Long addMechanic(Mechanic theMechanic);
 
 	void deleteMechanic(Long theId);
 
@@ -21,9 +21,11 @@ public interface MechanicService {
 
 	public String findAllMechanic();
 
-	public String taskCompleted(OrderTable orderTable, Long theOrderId);
+	public String taskCompleted(List<SparePart> spareParts, String theOrderTrackingNumber);
 
 	public List<OrderTable> findPendingOrders(Long theMechanicId);
+
+	Mechanic login(String email, String password);
 
 	
 

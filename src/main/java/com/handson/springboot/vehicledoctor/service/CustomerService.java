@@ -18,4 +18,10 @@ public interface CustomerService {
 
 	OrderTable findOrderByTrackingNumber(Long theId, String trackingNumber);
 
+	String payOrder(Long theId, String theOrderTrackingNumber);
+
+	Customer login(String email, String password);
+
+	String update(Customer theCustomer);
+
 }

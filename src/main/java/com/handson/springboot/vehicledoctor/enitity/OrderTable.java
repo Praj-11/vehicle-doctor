@@ -182,6 +182,11 @@ public class OrderTable {
 	public void setSparePartsUsed(List<SparePart> sparePartsUsed) {
 		this.sparePartsUsed = sparePartsUsed;
 	}
+	
+	public void addSparePartsUsed(List<SparePart> spareParts) {
+		
+		this.sparePartsUsed.addAll(spareParts);
+	}
 
 	@Override
 	public String toString() {

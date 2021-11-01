@@ -34,10 +34,15 @@ public class CustomerController {
 		return customerService.addCustomer(theCustomer);
 	}
 	
+	@PutMapping("/update/{id}")
+	public void update(@RequestBody Customer theCustomer) {
+		customerService.update(theCustomer);
+	}
+	
 	@PostMapping("/{theId}/bookService")
-	public String placeOrder(@RequestBody OrderTable order, @PathVariable("theId") Long theId) {
+	public String placeOrder(@RequestBody OrderTable theOrder, @PathVariable("theId") Long theId) {
 		
-		return customerService.placeOrder(order, theId);
+		return customerService.placeOrder(theOrder, theId);
 		
 	}
 	
@@ -50,7 +55,13 @@ public class CustomerController {
 	@GetMapping("/{theId}/orders/trackingOrderId/{theOrderTrackingNumber}") 
 		public String findOrderByTrackingId(@PathVariable("theId") Long theId,@PathVariable("theOrderTrackingNumber") String trackingNumber) {
 			return customerService.findOrderByTrackingNumber(theId,trackingNumber).toString();
-		}
+	}
+	
+	@GetMapping("/{theId}/pays/{theOrderTrackingNumber}")
+	public String payOrder(@PathVariable("theId") Long theId, @PathVariable("theOrderTrackingNumber") String theOrderTrackingNumber) {
+		
+		return customerService.payOrder(theId, theOrderTrackingNumber);
+	}
 		
 		
 	

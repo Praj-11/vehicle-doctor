@@ -1,4 +1,4 @@
-package com.handson.springboot.vehicledoctor.dao;
+package com.handson.springboot.vehicledoctor.repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +11,7 @@ import com.handson.springboot.vehicledoctor.enitity.OrderTable;
 
 public interface OrderRepository extends JpaRepository<OrderTable, Long> {
 
-	OrderTable findByOrderTrackingNumber(String trackingNumber);
+	OrderTable findByOrderTrackingNumber(String theOrderTrackingNumber);
 	
 	@Query("Select o from OrderTable o where o.mechanic.id=:theMechanicId AND o.status=:status")
 	List<OrderTable> findPendingOrders(@Param("theMechanicId") Long theMechanicId,@Param("status") char status);

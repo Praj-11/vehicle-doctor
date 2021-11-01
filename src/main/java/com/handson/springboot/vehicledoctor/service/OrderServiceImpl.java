@@ -1,16 +1,18 @@
 package com.handson.springboot.vehicledoctor.service;
 
+import java.util.*;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.handson.springboot.vehicledoctor.dao.GarageRepository;
-import com.handson.springboot.vehicledoctor.dao.OrderRepository;
 import com.handson.springboot.vehicledoctor.enitity.Garage;
 import com.handson.springboot.vehicledoctor.enitity.Mechanic;
 import com.handson.springboot.vehicledoctor.enitity.OrderTable;
+import com.handson.springboot.vehicledoctor.enitity.SparePart;
+import com.handson.springboot.vehicledoctor.repository.GarageRepository;
+import com.handson.springboot.vehicledoctor.repository.OrderRepository;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -46,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setBillAmount(0.00);
 		order.setPaymentStatus('p');
 		order.getOrderAppointmentDate().setHours(order.getOrderAppointmentDate().getHours() + 3);
-		
+		order.setSparePartsUsed(new ArrayList<>());
 		
 		System.out.println("Everything is good till here: " + order.toString());
 		
@@ -55,6 +57,26 @@ public class OrderServiceImpl implements OrderService {
 		
 		
 		return "Order Tracking Details: " + order.getOrderTrackingNumber();
+	}
+
+	@Override
+	public String addSpareParts(List<SparePart> spareParts, String theOrderTrackingNumber) {
+		
+		OrderTable temp = orderRepository.findByOrderTrackingNumber(theOrderTrackingNumber);
+		
+		if (temp != null) {
+			
+			temp.addSparePartsUsed(spareParts);
+			
+			temp.setStatus('c');
+			
+
+			return "Order Successfully Completed: \nOrder Desc: " + 
+			temp.getOrderDescription() + "\nSpare Parts Used: " + spareParts;
+		}
+		
+		return "Invalid Order Tracking Number";
+		
 	}
 
 }
