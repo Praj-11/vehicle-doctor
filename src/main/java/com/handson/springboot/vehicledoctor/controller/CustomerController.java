@@ -19,7 +19,29 @@ public class CustomerController {
 	@GetMapping("/")
 	public String helloUser() {
 		
-		return "Hello Customer";
+		return "Current Supported Endpoints: \n\n "
+				+ "/findById/{theId}: Show details \n "
+				+ "/update/{theId}: Update Details \n "
+				+ "/{theId}/bookService: Book Slot for Vehicle Service \n "
+				+ "/{theId}/orders: Show all orders \n" 
+				+ "/{theId}/orders/trackingOrderId/{theOrderTrackingNumber}: Track Order"
+				+ "/{theId}/pays/{theOrderTrackingNumber}: Pay for order";
+	}
+	
+
+	@GetMapping("/{theId}")
+	public String helloUser(@PathVariable Long theId) {
+		
+		Customer tempCustomer = customerService.findById(theId);
+		
+		return "Hello " + tempCustomer.getName() + "(Id: " + tempCustomer.getId() + ")\n\n"
+				+ "Current Supported Endpoints: \n\n "
+				+ "/findById/{theId}: Show details \n "
+				+ "/update/{theId}: Update Details \n "
+				+ "/{theId}/bookService: Book Slot for Vehicle Service \n "
+				+ "/{theId}/orders: Show all orders \n" 
+				+ "/{theId}/orders/trackingOrderId/{theOrderTrackingNumber}: Track Order"
+				+ "/{theId}/pays/{theOrderTrackingNumber}: Pay for order";
 	}
 	
 	@GetMapping("/findById/{theId}")

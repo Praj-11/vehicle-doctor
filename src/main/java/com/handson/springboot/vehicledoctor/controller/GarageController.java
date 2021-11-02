@@ -1,15 +1,11 @@
 package com.handson.springboot.vehicledoctor.controller;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.handson.springboot.vehicledoctor.enitity.Garage;
 import com.handson.springboot.vehicledoctor.enitity.Mechanic;
 import com.handson.springboot.vehicledoctor.service.GarageService;
-import com.handson.springboot.vehicledoctor.service.MechanicService;
 
 @RestController
 @RequestMapping("/api/garage")
@@ -18,18 +14,35 @@ public class GarageController {
 	@Autowired
 	private GarageService garageService;
 	
-	@Autowired
-	private MechanicService mechanicService;
 	@GetMapping("/")
 	public String getHello() {
 		
-		return "Current Supported Endpoints: \n\n /findById/{theId}: Shows garage details \n /{theId}/addMechanic: Add Mechanic \n /{theId}/updateMechanic: Update Mechanic Info \n /{theGarageId}/deleteMechanic/{theMechanicId}: Delete Mechanic Details";
+		return "Current Supported Endpoints: \n\n "
+				+ "/findById/{theId}: Shows garage details \n "
+				+ "/{theId}/addMechanic: Add Mechanic \n "
+				+ "/{theId}/updateMechanic: Update Mechanic Info \n "
+				+ "/{theGarageId}/deleteMechanic/{theMechanicId}: Delete Mechanic Details \n"
+				+ "/{theId}/orders: Get all orders";
+	}
+	
+	@GetMapping("/{theId}")
+	public String helloUser(@PathVariable Long theId) {
+		
+		Garage tempGarage = garageService.getGarageOwner(theId).get();
+		
+		return "Hello " + tempGarage.getGarageName() + "(id: " + tempGarage.getId() + ")\n\n"
+				+ "Current Supported Endpoints: \n\n "
+				+ "/findById/{theId}: Shows garage details \n "
+				+ "/{theId}/addMechanic: Add Mechanic \n "
+				+ "/{theId}/updateMechanic: Update Mechanic Info \n "
+				+ "/{theGarageId}/deleteMechanic/{theMechanicId}: Delete Mechanic Details \n"
+				+ "/{theId}/orders: Get all orders";
 	}
 	
 	@PostMapping("/{theId}/addMechanic")
 	public String addMechanic(@RequestBody Mechanic theMechanic, @PathVariable("theId") Long theId) {
 		 
-		return "Mechanic Added Successfully: Login Detail: " + garageService.addMechanic(theId, theMechanic);
+		return "Mechanic Added Successfully: Login Detail:\n " + garageService.addMechanic(theId, theMechanic);
 	}
 	
 	@GetMapping("/{theId}/mechanicStatus")

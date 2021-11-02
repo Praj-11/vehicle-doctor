@@ -37,7 +37,7 @@ public class LoginController {
 				
 		if (tempGarage != null) {
 			
-			return new RedirectView("/api/garage/");
+			return new RedirectView("/api/garage/" + tempGarage.getId());
 		}else {
 			
 			throw new ApiRequestException(invalidLoginCredentialError);
@@ -51,7 +51,7 @@ public class LoginController {
 				
 		if (tempCustomer != null) {
 			
-			return new RedirectView("/api/customer/");
+			return new RedirectView("/api/customer/" + tempCustomer.getId());
 		}else {
 
 			throw new ApiRequestException(invalidLoginCredentialError);
@@ -65,7 +65,7 @@ public class LoginController {
 				
 		if (tempMechanic != null) {
 			
-			return new RedirectView("/api/mechanic/");
+			return new RedirectView("/api/mechanic/" + tempMechanic.getId());
 		}else {
 
 			throw new ApiRequestException(invalidLoginCredentialError);

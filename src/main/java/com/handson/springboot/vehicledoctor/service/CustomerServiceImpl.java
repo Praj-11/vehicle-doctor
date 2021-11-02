@@ -1,5 +1,7 @@
 package com.handson.springboot.vehicledoctor.service;
 
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -136,8 +138,14 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		Double totalAmount = tempOrder.get().getSparePartsUsed().stream().
 				reduce(0.00, (temp, 
-						tempSparePart) -> temp + (tempSparePart.getPrice() * tempSparePart.getQuantity()), 
+						tempSparePart) -> temp + tempSparePart.getPrice(), 
 						Double::sum);
+		
+		tempOrder.get().setBillAmount(totalAmount);
+		
+		tempOrder.get().setOrderCompleted(new Date());
+		
+		orderService.saveOrder(tempOrder.get());
 		
 		
 		return "Order Invoice \nCustomer Name:  " + tempOrder.get().getCustomer().getName() + 

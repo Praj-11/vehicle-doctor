@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -75,8 +76,9 @@ public class OrderTable {
 	private Mechanic mechanic;
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "spare_parts_used")
-//	 @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+	@JoinTable(name = "order_table_spare_part", 
+		joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")}, 
+		inverseJoinColumns = {@JoinColumn(name = "spare_part_id", referencedColumnName = "id")})
 	private List<SparePart> sparePartsUsed;
 
 	public Long getId() {
@@ -190,11 +192,24 @@ public class OrderTable {
 
 	@Override
 	public String toString() {
-		return "\nOrder [id=" + id + ", orderTrackingNumber=" + orderTrackingNumber + ", orderDescription="
+		return "OrderTable [id=" + id + ", orderTrackingNumber=" + orderTrackingNumber + ", orderDescription="
 				+ orderDescription + ", billAmount=" + billAmount + ", orderCreated=" + orderCreated
 				+ ", orderCompleted=" + orderCompleted + ", orderAppointmentDate=" + orderAppointmentDate + ", status="
-				+ status + ", paymentStatus=" + paymentStatus + ", customer=" + customer.getName() + ", garage=" + garage.getGarageName()
-				+ ", mechanic=" + mechanic.getName() +"]";
+				+ status + ", paymentStatus=" + paymentStatus + ", customer= {id: " + customer.getId() 
+				+ ", name: " + customer.getName() + "}, garage= {id: " + garage.getId() + ", name: " + garage.getGarageName() 
+				+ "}, mechanic= {id: " + mechanic.getId() + ", name: " + mechanic.getName() 
+				+ "}, sparePartsUsed=" + sparePartsUsed + "]";
 	}
+
+//	@Override
+//	public String toString() {
+//		return "\nOrder [id=" + id + ", orderTrackingNumber=" + orderTrackingNumber + ", orderDescription="
+//				+ orderDescription + ", billAmount=" + billAmount + ", orderCreated=" + orderCreated
+//				+ ", orderCompleted=" + orderCompleted + ", orderAppointmentDate=" + orderAppointmentDate + ", status="
+//				+ status + ", paymentStatus=" + paymentStatus + ", customer=" + customer.getName() + ", garage=" + garage.getGarageName()
+//				+ ", mechanic=" + mechanic.getName() +"]";
+//	}
+	
+	
 }
 

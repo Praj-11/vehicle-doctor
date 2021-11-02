@@ -70,7 +70,7 @@ public class GarageServiceImpl implements GarageService{
 		
 		Long mechanicId =  mechanicService.addMechanic(theMechanic);
 		
-		return "Id: " + mechanicId + "Email: " + emailString + ", Password: " + passwordString;
+		return "Id: " + mechanicId + " \nEmail: " + emailString + " \nPassword: " + passwordString;
 	}
 
 	@Override
@@ -112,26 +112,31 @@ public class GarageServiceImpl implements GarageService{
 	@Override
 	public String updateMechanic(Long theId, Mechanic theMechanic) {
 		
+		Optional<Garage> tempGarage = garageRepository.findById(theId);
 		
-		Boolean mechanicStatus = mechanicService.existsById(theId, theMechanic);
-		
-		if (Boolean.TRUE.equals(mechanicStatus)) {
+		if (tempGarage.isEmpty()) {
 			
-			Optional<Garage> tempGarage = garageRepository.findById(theId);
-			
-			if (tempGarage.isEmpty()) {
-				
-				throw new ApiRequestException(invalidGarageIdError);
-			}
-			
-			theMechanic.setEmployer(tempGarage.get());
-			
-			mechanicService.addMechanic(theMechanic);
-			
-			return "Mechanic Updated Successfully";
+			throw new ApiRequestException(invalidGarageIdError);
 		}
 		
-		return "Invalid Mechanic Id";
+		Optional<Mechanic> tempMechanic = tempGarage.get().getMechanics().stream().
+				filter(temp -> temp.getId().equals(theMechanic.getId())).findFirst();
+		
+		if (tempMechanic.isEmpty()) {
+			
+			throw new ApiRequestException("Invalid Mechanic Id");
+		}
+		
+			
+		theMechanic.setEmployer(tempGarage.get());
+		theMechanic.setDateJoined(tempMechanic.get().getDateJoined());
+		theMechanic.setActive(tempMechanic.get().getActive());
+		theMechanic.setPassword(tempMechanic.get().getPassword());
+		
+		mechanicService.addMechanic(theMechanic);
+		
+		return "Mechanic Updated Successfully";
+		
 	}
 
 

@@ -1,5 +1,6 @@
 package com.handson.springboot.vehicledoctor.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,20 +22,24 @@ public class SparePartServiceImpl implements SparePartService {
 	@Override
 	public List<SparePart> getSpareParts(List<SparePart> spareParts) {
 		
-		return spareParts.stream().filter(temp-> {
+		List<SparePart> tempSpareParts = new ArrayList<>();
+		
+		spareParts.stream().forEach(temp-> {
 			
 			List<SparePart> temp2 = sparePartRepository.findByPartName(temp.getPartName());
 			
 			if (temp2 != null && !temp2.isEmpty()) {
 				
-				temp = temp2.get(0);
+				tempSpareParts.add(temp2.get(0));
 			}else {
 				
 				System.out.println("Part doesn't exists. Please check part name: " + temp.getPartName());
 			}
-			
-			return true;
-		}).collect(Collectors.toList());
+		});
+		
+		
+		
+		return tempSpareParts;
 	}
 
 }

@@ -23,10 +23,6 @@ public class SparePart {
 	@Column(name = "price")
 	private Double price;
 	
-	private Integer quantity;
-	
-
-
 	public Long getId() {
 		return id;
 	}
@@ -46,17 +42,6 @@ public class SparePart {
 		this.partName = partName;
 	}
 
-
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
-	}
-
-
 	public Double getPrice() {
 		return price;
 	}
@@ -69,7 +54,7 @@ public class SparePart {
 
 	@Override
 	public String toString() {
-		return "SparePart [id=" + id + ", partName=" + partName + ", quantity=" + quantity + ", price=" + price + "]";
+		return "SparePart [id=" + id + ", partName=" + partName + ", price=" + price + "]";
 	}	
 	
 	

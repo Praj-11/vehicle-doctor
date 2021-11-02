@@ -48,7 +48,8 @@ public class OrderServiceImpl implements OrderService {
 		order.setBillAmount(0.00);
 		order.setPaymentStatus('p');
 		order.getOrderAppointmentDate().setHours(order.getOrderAppointmentDate().getHours() + 3);
-		order.setSparePartsUsed(new ArrayList<>());
+		
+		order.setSparePartsUsed(new ArrayList<SparePart>());
 		
 		System.out.println("Everything is good till here: " + order.toString());
 		
@@ -64,18 +65,30 @@ public class OrderServiceImpl implements OrderService {
 		
 		OrderTable temp = orderRepository.findByOrderTrackingNumber(theOrderTrackingNumber);
 		
-		if (temp != null) {
+		if (temp != null && !temp.getStatus().equals('c')) {
 			
-			temp.addSparePartsUsed(spareParts);
+
+			System.out.println("Spare Parts in Complete Order: " + spareParts.toString());
+			
+//			temp.addSparePartsUsed(spareParts);
+			temp.setSparePartsUsed(spareParts);
+			System.out.println("Order Details on complete order: " + temp);
 			
 			temp.setStatus('c');
-			
+			orderRepository.save(temp);
 
 			return "Order Successfully Completed: \nOrder Desc: " + 
 			temp.getOrderDescription() + "\nSpare Parts Used: " + spareParts;
 		}
 		
 		return "Invalid Order Tracking Number";
+		
+	}
+
+	@Override
+	public void saveOrder(OrderTable tempOrder) {
+		
+		orderRepository.save(tempOrder);
 		
 	}
 

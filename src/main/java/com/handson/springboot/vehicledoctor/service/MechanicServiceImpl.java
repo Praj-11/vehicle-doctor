@@ -42,11 +42,16 @@ public class MechanicServiceImpl implements MechanicService{
 			
 			Mechanic tempMechanic = mechanicRepository.findByEmail(email).get(0);
 			
-			return (tempMechanic.getPassword().equals(password)) ? tempMechanic : null;
+			System.out.println("Mechanic Details: " + tempMechanic);
 			
+			
+			if (tempMechanic.getPassword().equals(password)) {
+				
+				return tempMechanic;
+			}
 		}
 		
-		return null;
+		throw new ApiRequestException("Invalid Login Credentials");
 	}
 
 	@Override
