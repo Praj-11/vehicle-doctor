@@ -2,20 +2,19 @@ package com.handson.springboot.vehicledoctor.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.hibernate.sql.Template;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.handson.springboot.vehicledoctor.enitity.SparePart;
 import com.handson.springboot.vehicledoctor.repository.SparePartRepository;
 
-import net.bytebuddy.description.ModifierReviewable.OfAbstraction;
-
 @Service
 public class SparePartServiceImpl implements SparePartService {
 
+	private static final Logger logger = Logger.getLogger(SparePartServiceImpl.class);
+	
 	@Autowired
 	private SparePartRepository sparePartRepository;
 	
@@ -32,8 +31,7 @@ public class SparePartServiceImpl implements SparePartService {
 				
 				tempSpareParts.add(temp2.get(0));
 			}else {
-				
-				System.out.println("Part doesn't exists. Please check part name: " + temp.getPartName());
+				logger.error("Part doesn't exists. Please check part name: " + temp.getPartName());
 			}
 		});
 		

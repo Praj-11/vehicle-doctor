@@ -1,12 +1,11 @@
 package com.handson.springboot.vehicledoctor.service;
 
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +18,8 @@ import com.handson.springboot.vehicledoctor.exceptions.ApiRequestException;
 @Service
 public class MechanicServiceImpl implements MechanicService{
 
+	private static final Logger logger = Logger.getLogger(MechanicServiceImpl.class);
+	
 	@Autowired
 	private MechanicRepository mechanicRepository;
 	
@@ -37,16 +38,11 @@ public class MechanicServiceImpl implements MechanicService{
 	@Override
 	public Mechanic login(String email, String password) {
 		
-		if (!mechanicRepository.findByEmail(email).isEmpty()) {
-			
-			
+		if (!mechanicRepository.findByEmail(email).isEmpty()) {		
 			Mechanic tempMechanic = mechanicRepository.findByEmail(email).get(0);
-			
-			System.out.println("Mechanic Details: " + tempMechanic);
-			
-			
-			if (tempMechanic.getPassword().equals(password)) {
-				
+			logger.info("Mechanic Details: " + tempMechanic);
+	
+			if (tempMechanic.getPassword().equals(password)) {				
 				return tempMechanic;
 			}
 		}
@@ -56,7 +52,6 @@ public class MechanicServiceImpl implements MechanicService{
 
 	@Override
 	public void deleteMechanic(Long theId) {
-
 		mechanicRepository.deleteById(theId);
 	}
 

@@ -1,6 +1,5 @@
 package com.handson.springboot.vehicledoctor.enitity;
 
-import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,6 +1,5 @@
 package com.handson.springboot.vehicledoctor.enitity;
 
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -13,19 +12,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.criteria.Fetch;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.core.JsonEncoding;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
 
 @Entity
@@ -200,16 +193,5 @@ public class OrderTable {
 				+ "}, mechanic= {id: " + mechanic.getId() + ", name: " + mechanic.getName() 
 				+ "}, sparePartsUsed=" + sparePartsUsed + "]";
 	}
-
-//	@Override
-//	public String toString() {
-//		return "\nOrder [id=" + id + ", orderTrackingNumber=" + orderTrackingNumber + ", orderDescription="
-//				+ orderDescription + ", billAmount=" + billAmount + ", orderCreated=" + orderCreated
-//				+ ", orderCompleted=" + orderCompleted + ", orderAppointmentDate=" + orderAppointmentDate + ", status="
-//				+ status + ", paymentStatus=" + paymentStatus + ", customer=" + customer.getName() + ", garage=" + garage.getGarageName()
-//				+ ", mechanic=" + mechanic.getName() +"]";
-//	}
-	
-	
 }
 
