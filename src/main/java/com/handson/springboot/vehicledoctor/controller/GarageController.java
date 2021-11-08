@@ -1,10 +1,15 @@
 package com.handson.springboot.vehicledoctor.controller;
 
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.handson.springboot.vehicledoctor.dto.MechanicDTO;
 import com.handson.springboot.vehicledoctor.enitity.Garage;
 import com.handson.springboot.vehicledoctor.enitity.Mechanic;
+import com.handson.springboot.vehicledoctor.exceptions.ApiRequestException;
 import com.handson.springboot.vehicledoctor.service.GarageService;
 
 @RestController
@@ -13,6 +18,9 @@ public class GarageController {
 	
 	@Autowired
 	private GarageService garageService;
+
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@GetMapping("/")
 	public String getHello() {
@@ -28,7 +36,16 @@ public class GarageController {
 	@GetMapping("/{theId}")
 	public String helloUser(@PathVariable Long theId) {
 		
-		Garage tempGarage = garageService.getGarageOwner(theId).get();
+		
+		
+		Optional<Garage> tempGarageOptional = garageService.getGarageOwner(theId);
+		
+		if (tempGarageOptional.isEmpty()) {
+			
+			throw new ApiRequestException("Invalid Garage Id");
+		}
+		
+		Garage tempGarage = tempGarageOptional.get();
 		
 		return "Hello " + tempGarage.getGarageName() + "(id: " + tempGarage.getId() + ")\n\n"
 				+ "Current Supported Endpoints: \n\n "
@@ -40,8 +57,9 @@ public class GarageController {
 	}
 	
 	@PostMapping("/{theId}/addMechanic")
-	public String addMechanic(@RequestBody Mechanic theMechanic, @PathVariable("theId") Long theId) {
+	public String addMechanic(@RequestBody MechanicDTO theMechanicDTO, @PathVariable("theId") Long theId) {
 		 
+		Mechanic theMechanic = modelMapper.map(theMechanicDTO, Mechanic.class);
 		return "Mechanic Added Successfully: Login Detail:\n " + garageService.addMechanic(theId, theMechanic);
 	}
 	
@@ -58,8 +76,9 @@ public class GarageController {
 	}
 
 	@PutMapping("/{theId}/updateMechanic/")
-	public String updateMechanic(@RequestBody Mechanic theMechanic, @PathVariable Long theId){
+	public String updateMechanic(@RequestBody MechanicDTO theMechanicDTO, @PathVariable Long theId){
 
+		Mechanic theMechanic = modelMapper.map(theMechanicDTO, Mechanic.class);
 		return garageService.updateMechanic(theId, theMechanic);
 	}
 

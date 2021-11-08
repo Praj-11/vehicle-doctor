@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.handson.springboot.vehicledoctor.enitity.Customer;
@@ -19,20 +20,23 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private OrderService orderService;
 	
 	private static final Logger logger = Logger.getLogger(CustomerServiceImpl.class);
 
-	private static final String invalidCustomerIdError = "Invalid Customer Id";
+	private static final String INVALIDCUSTOMERID = "Invalid Customer Id";
 
 	@Override
 	public Customer login(String email, String password) {
 		
 		if (!customerRepository.findByEmail(email).isEmpty()) {
 			Customer tempCustomer = customerRepository.findByEmail(email).get(0);
-			return (tempCustomer.getPassword().equals(password)) ? tempCustomer : null;
+			return (passwordEncoder.matches(password, tempCustomer.getPassword())) ? tempCustomer : null;
 			
 		}
 		return null;
@@ -40,6 +44,9 @@ public class CustomerServiceImpl implements CustomerService {
 	
 	@Override
 	public String update(Customer theCustomer) {
+		
+		
+		
 		customerRepository.save(theCustomer);
 		logger.info("Customer updated successfully with id:"+ theCustomer.getId());
 		return "Customer Updated successfully with id:" + theCustomer.getId();
@@ -68,7 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		if (tempCustomer.isEmpty()) {
 			
-			throw new ApiRequestException(invalidCustomerIdError);
+			throw new ApiRequestException(INVALIDCUSTOMERID);
 		}
 		
 		return tempCustomer.get();
@@ -76,6 +83,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public String addCustomer(Customer theCustomer) {
+		
 		logger.info("Customer Registered Successfully !!!");
 		return customerRepository.save(theCustomer).toString();
 	}
@@ -86,7 +94,7 @@ public class CustomerServiceImpl implements CustomerService {
 		Optional<Customer> tempCustomer = customerRepository.findById(theId);
 		
 		if (tempCustomer.isEmpty()) {
-			throw new ApiRequestException(invalidCustomerIdError);
+			throw new ApiRequestException(INVALIDCUSTOMERID);
 		}
 		
 		return tempCustomer.get().getOrders();
@@ -97,7 +105,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		if (!customerRepository.existsById(theId)) {
 
-			throw new ApiRequestException(invalidCustomerIdError);
+			throw new ApiRequestException(INVALIDCUSTOMERID);
 		}
 		
 		Optional<OrderTable> temp = customerRepository.getById(theId).getOrders().stream()
@@ -116,7 +124,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		if (!customerRepository.existsById(theId)) {
 
-			throw new ApiRequestException(invalidCustomerIdError);
+			throw new ApiRequestException(INVALIDCUSTOMERID);
 		}
 		
 		Optional<OrderTable> tempOrder = customerRepository.getById(theId).getOrders().stream()

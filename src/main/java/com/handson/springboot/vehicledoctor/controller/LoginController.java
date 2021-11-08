@@ -28,7 +28,7 @@ public class LoginController {
 	@Autowired
 	private MechanicService mechanicService;
 	
-	private static final String invalidLoginCredentialError = "Invalid Login Credentials";
+	private static final String INVALIDLOGINCREDENTIAL = "Invalid Login Credentials";
 	
 	@GetMapping("/garage")
 	public RedirectView login(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
@@ -40,7 +40,7 @@ public class LoginController {
 			return new RedirectView("/api/garage/" + tempGarage.getId());
 		}else {
 			
-			throw new ApiRequestException(invalidLoginCredentialError);
+			throw new ApiRequestException(INVALIDLOGINCREDENTIAL);
 		}
 	}
 	
@@ -54,7 +54,7 @@ public class LoginController {
 			return new RedirectView("/api/customer/" + tempCustomer.getId());
 		}else {
 
-			throw new ApiRequestException(invalidLoginCredentialError);
+			throw new ApiRequestException(INVALIDLOGINCREDENTIAL);
 		}
 	}
 	
@@ -68,7 +68,7 @@ public class LoginController {
 			return new RedirectView("/api/mechanic/" + tempMechanic.getId());
 		}else {
 
-			throw new ApiRequestException(invalidLoginCredentialError);
+			throw new ApiRequestException(INVALIDLOGINCREDENTIAL);
 		}
 	}
 }

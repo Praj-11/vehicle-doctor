@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.handson.springboot.vehicledoctor.enitity.Garage;
@@ -29,8 +30,11 @@ public class GarageServiceImpl implements GarageService{
 	@Autowired
 	private MechanicService mechanicService;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	private static final Logger logger = Logger.getLogger(GarageServiceImpl.class);
-	private static final String invalidGarageIdError = "Invalid Garage Id";
+	private static final String INVALIDGARAGEID = "Invalid Garage Id";
 	
 	
 	@Override
@@ -40,7 +44,7 @@ public class GarageServiceImpl implements GarageService{
 		
 		if (garageOwner.isEmpty()) {
 			
-			throw new ApiRequestException(invalidGarageIdError);
+			throw new ApiRequestException(INVALIDGARAGEID);
 		}
 		
 		String emailString = theMechanic.getName().toLowerCase() + "@" + garageOwner.get().getGarageName().split(" ")[0].toLowerCase() + ".com";
@@ -53,7 +57,7 @@ public class GarageServiceImpl implements GarageService{
 		String passwordString = theMechanic.getName() + "123";
 		
 		theMechanic.setEmail(emailString);
-		theMechanic.setPassword(passwordString);
+		theMechanic.setPassword(passwordEncoder.encode(passwordString));
 		
 		garageOwner.ifPresent(theMechanic::setEmployer);
 		
@@ -93,7 +97,7 @@ public class GarageServiceImpl implements GarageService{
 			
 			Garage tempGarage = garageRepository.findByEmail(email).get(0);
 			
-			return (tempGarage.getPassword().equals(password)) ? tempGarage : null;
+			return (passwordEncoder.matches(password, tempGarage.getPassword())) ? tempGarage : null;
 			
 		}
 		
@@ -107,7 +111,7 @@ public class GarageServiceImpl implements GarageService{
 		
 		if (tempGarage.isEmpty()) {
 			
-			throw new ApiRequestException(invalidGarageIdError);
+			throw new ApiRequestException(INVALIDGARAGEID);
 		}
 		
 		Optional<Mechanic> tempMechanic = tempGarage.get().getMechanics().stream().
@@ -123,6 +127,7 @@ public class GarageServiceImpl implements GarageService{
 		theMechanic.setDateJoined(tempMechanic.get().getDateJoined());
 		theMechanic.setActive(tempMechanic.get().getActive());
 		theMechanic.setPassword(tempMechanic.get().getPassword());
+		theMechanic.setEmail(tempMechanic.get().getEmail());
 		
 		mechanicService.addMechanic(theMechanic);
 		
@@ -147,7 +152,7 @@ public class GarageServiceImpl implements GarageService{
 		
 		if (garage.isEmpty()) {
 
-			throw new ApiRequestException(invalidGarageIdError);
+			throw new ApiRequestException(INVALIDGARAGEID);
 		}
 		
 		Garage tempGarage = garage.get();
@@ -191,7 +196,7 @@ public class GarageServiceImpl implements GarageService{
 		if(!tempMechanic.isPresent()) {
 			return "Mechanic is not found, Please provide valid id !!!";
 		} else if(tempMechanic.get().getOrders().isEmpty()) {
-			return "Mechanic Status: \n" + tempMechanic.get().getName()+ " is Available.";
+			return tempMechanic.get().getName()+ " is Available.";
 		}
 		return tempMechanic.get().getOrders().get(0).getStatus().toString().equalsIgnoreCase("c") ? "Mechanic Status: \n" + tempMechanic.get().getName()+ " is Available.":"Mechanic Status: \n" + tempMechanic.get().getName()+ " is busy in repairing a vehicle of " +tempMechanic.get().getOrders().get(0).getCustomer().getName() +". His appointment date/time is : "+tempMechanic.get().getOrders().get(0).getOrderAppointmentDate();
 	}
@@ -208,7 +213,7 @@ public class GarageServiceImpl implements GarageService{
 		
 		if (tempGarage.isEmpty()) {
 
-			throw new ApiRequestException(invalidGarageIdError);
+			throw new ApiRequestException(INVALIDGARAGEID);
 		}
 		
 		return tempGarage.get().getOrders().toString();

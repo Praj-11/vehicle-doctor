@@ -1,6 +1,7 @@
 package com.handson.springboot.vehicledoctor.controller;
 
 import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.handson.springboot.vehicledoctor.enitity.Mechanic;
 import com.handson.springboot.vehicledoctor.enitity.SparePart;
+import com.handson.springboot.vehicledoctor.exceptions.ApiRequestException;
 import com.handson.springboot.vehicledoctor.service.MechanicService;
 
 
@@ -20,6 +22,7 @@ public class MechanicController {
 
 	@Autowired
 	private MechanicService mechanicService;
+	
 	
 	@GetMapping("/")
 	public String getEndpoints() {
@@ -33,6 +36,11 @@ public class MechanicController {
 	public String helloUser(@PathVariable Long theId) {
 		
 		Optional<Mechanic> tempMechanic = mechanicService.findById(theId);
+		
+		if (tempMechanic.isEmpty()) {
+			
+			throw new ApiRequestException("Invalid Mechanic Id");
+		}
 		
 		return "Welcome " + tempMechanic.get().getName() + "(Id: " + tempMechanic.get().getId() + ")\n\n"
 				+ "Current Supported Endpoints: \n\n "

@@ -189,7 +189,7 @@ public class OrderTable {
 				+ orderDescription + ", billAmount=" + billAmount + ", orderCreated=" + orderCreated
 				+ ", orderCompleted=" + orderCompleted + ", orderAppointmentDate=" + orderAppointmentDate + ", status="
 				+ status + ", paymentStatus=" + paymentStatus + ", customer= {id: " + customer.getId() 
-				+ ", name: " + customer.getName() + "}, garage= {id: " + garage.getId() + ", name: " + garage.getGarageName() 
+				+ ",name: " + customer.getName() + "}, garage= {id: " + garage.getId() + ", name: " + garage.getGarageName() 
 				+ "}, mechanic= {id: " + mechanic.getId() + ", name: " + mechanic.getName() 
 				+ "}, sparePartsUsed=" + sparePartsUsed + "]";
 	}

@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setPaymentStatus('p');
 		order.getOrderAppointmentDate().setHours(order.getOrderAppointmentDate().getHours() + 3);
 		
-		order.setSparePartsUsed(new ArrayList<SparePart>());
+		order.setSparePartsUsed(new ArrayList<>());
 		logger.info("Everything is good till here: " + order.toString());	
 		orderRepository.save(order);
 				
@@ -66,7 +66,6 @@ public class OrderServiceImpl implements OrderService {
 		if (temp != null && !temp.getStatus().equals('c')) {
 			
 			logger.info("Spare Parts in Complete Order: " + spareParts.toString());	
-//			temp.addSparePartsUsed(spareParts);
 			temp.setSparePartsUsed(spareParts);
 			logger.info("Order Details on complete order: " + temp);
 			

@@ -31,18 +31,6 @@ public class Address {
 	@Column(name = "zip_code")
 	private String zipCode;
 
-//	@OneToOne
-//	@PrimaryKeyJoinColumn
-//	private Mechanic mechanic;
-//	
-//	public Mechanic getMechanic() {
-//		return mechanic;
-//	}
-//
-//	public void setMechanic(Mechanic mechanic) {
-//		this.mechanic = mechanic;
-//	}
-
 	public Long getId() {
 		return id;
 	}
