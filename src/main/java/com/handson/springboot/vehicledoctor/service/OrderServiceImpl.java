@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,13 @@ import com.handson.springboot.vehicledoctor.enitity.Garage;
 import com.handson.springboot.vehicledoctor.enitity.Mechanic;
 import com.handson.springboot.vehicledoctor.enitity.OrderTable;
 import com.handson.springboot.vehicledoctor.enitity.SparePart;
-import com.handson.springboot.vehicledoctor.repository.GarageRepository;
 import com.handson.springboot.vehicledoctor.repository.OrderRepository;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
+	private static final Logger logger = Logger.getLogger(OrderServiceImpl.class);
+	
 	@Autowired
 	private OrderRepository orderRepository;
 	
@@ -36,7 +38,7 @@ public class OrderServiceImpl implements OrderService {
 		Optional<Mechanic> tempMechanic = garageService.findMechanicByAvailability(tempGarage.get().getId(), order.getOrderAppointmentDate());
 		
 		if (tempMechanic.isEmpty()) {
-			
+			logger.error("No Mechanic Available. Please retry different slot");
 			return "No Mechanic Available. Please try different slot";
 		}
 		
@@ -50,13 +52,9 @@ public class OrderServiceImpl implements OrderService {
 		order.getOrderAppointmentDate().setHours(order.getOrderAppointmentDate().getHours() + 3);
 		
 		order.setSparePartsUsed(new ArrayList<SparePart>());
-		
-		System.out.println("Everything is good till here: " + order.toString());
-		
-		
+		logger.info("Everything is good till here: " + order.toString());	
 		orderRepository.save(order);
-		
-		
+				
 		return "Order Tracking Details: " + order.getOrderTrackingNumber();
 	}
 
@@ -67,12 +65,10 @@ public class OrderServiceImpl implements OrderService {
 		
 		if (temp != null && !temp.getStatus().equals('c')) {
 			
-
-			System.out.println("Spare Parts in Complete Order: " + spareParts.toString());
-			
+			logger.info("Spare Parts in Complete Order: " + spareParts.toString());	
 //			temp.addSparePartsUsed(spareParts);
 			temp.setSparePartsUsed(spareParts);
-			System.out.println("Order Details on complete order: " + temp);
+			logger.info("Order Details on complete order: " + temp);
 			
 			temp.setStatus('c');
 			orderRepository.save(temp);
@@ -81,6 +77,7 @@ public class OrderServiceImpl implements OrderService {
 			temp.getOrderDescription() + "\nSpare Parts Used: " + spareParts;
 		}
 		
+		logger.error("Invalid Order Tracking Number");
 		return "Invalid Order Tracking Number";
 		
 	}

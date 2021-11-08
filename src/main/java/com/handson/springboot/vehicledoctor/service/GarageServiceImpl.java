@@ -1,23 +1,15 @@
 package com.handson.springboot.vehicledoctor.service;
 
-import java.security.InvalidAlgorithmParameterException;
-import java.time.LocalDate;
-import java.util.Date;
-
-import java.util.Optional;
-
-
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collector;
+
+
+
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletResponse;
-import org.hibernate.engine.query.spi.ReturnMetadata;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Optionals;
 import org.springframework.stereotype.Service;
 
 import com.handson.springboot.vehicledoctor.enitity.Garage;
@@ -26,7 +18,6 @@ import com.handson.springboot.vehicledoctor.enitity.OrderTable;
 import com.handson.springboot.vehicledoctor.exceptions.ApiRequestException;
 import com.handson.springboot.vehicledoctor.repository.GarageRepository;
 
-import ch.qos.logback.core.filter.Filter;
 
 
 @Service
@@ -38,7 +29,7 @@ public class GarageServiceImpl implements GarageService{
 	@Autowired
 	private MechanicService mechanicService;
 	
-
+	private static final Logger logger = Logger.getLogger(GarageServiceImpl.class);
 	private static final String invalidGarageIdError = "Invalid Garage Id";
 	
 	
@@ -165,7 +156,7 @@ public class GarageServiceImpl implements GarageService{
 		
 		tempAppointmentDate.setHours(tempAppointmentDate.getHours()-3);
 		
-		System.out.println("Mechanic Available: " + tempGarage.getMechanics());
+		logger.info("Mechanic Available: " + tempGarage.getMechanics());
 		
 		Optional<Mechanic> tempMechanic = tempGarage.getMechanics().stream().filter(temp -> {
 			

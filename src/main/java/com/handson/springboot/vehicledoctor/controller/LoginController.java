@@ -28,7 +28,7 @@ public class LoginController {
 	@Autowired
 	private MechanicService mechanicService;
 	
-	private final static String invalidLoginCredentialError = "Invalid Login Credentials";
+	private static final String invalidLoginCredentialError = "Invalid Login Credentials";
 	
 	@GetMapping("/garage")
 	public RedirectView login(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {

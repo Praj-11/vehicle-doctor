@@ -1,11 +1,11 @@
 package com.handson.springboot.vehicledoctor.service;
 
-import java.time.ZonedDateTime;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +23,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private OrderService orderService;
 	
-//	private static final Logger logger;
+	private static final Logger logger = Logger.getLogger(CustomerServiceImpl.class);
 
 	private static final String invalidCustomerIdError = "Invalid Customer Id";
 
@@ -41,6 +41,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Override
 	public String update(Customer theCustomer) {
 		customerRepository.save(theCustomer);
+		logger.info("Customer updated successfully with id:"+ theCustomer.getId());
 		return "Customer Updated successfully with id:" + theCustomer.getId();
        
 	}
@@ -75,8 +76,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public String addCustomer(Customer theCustomer) {
-		
-		
+		logger.info("Customer Registered Successfully !!!");
 		return customerRepository.save(theCustomer).toString();
 	}
 
@@ -104,9 +104,8 @@ public class CustomerServiceImpl implements CustomerService {
 				.filter(temp2 -> temp2.getOrderTrackingNumber().equals(trackingNumber)).findFirst();
 		
 		if (temp.isEmpty()) {
-
-			throw new ApiRequestException("Invalid Tracking Number");
-			
+			logger.error("Invalid Tracking Number");
+			throw new ApiRequestException("Invalid Tracking Number");			
 		}
 		
 		return temp.get();
