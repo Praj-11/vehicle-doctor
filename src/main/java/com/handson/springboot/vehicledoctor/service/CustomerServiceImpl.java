@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.handson.springboot.vehicledoctor.enitity.Customer;
@@ -20,9 +19,6 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Autowired
 	private CustomerRepository customerRepository;
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private OrderService orderService;
@@ -36,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
 		
 		if (!customerRepository.findByEmail(email).isEmpty()) {
 			Customer tempCustomer = customerRepository.findByEmail(email).get(0);
-			return (passwordEncoder.matches(password, tempCustomer.getPassword())) ? tempCustomer : null;
+			return (password.equals(tempCustomer.getPassword())) ? tempCustomer : null;
 			
 		}
 		return null;

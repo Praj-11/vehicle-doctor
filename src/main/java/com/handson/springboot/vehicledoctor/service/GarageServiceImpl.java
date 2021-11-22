@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.handson.springboot.vehicledoctor.enitity.Garage;
@@ -29,9 +28,6 @@ public class GarageServiceImpl implements GarageService{
 	
 	@Autowired
 	private MechanicService mechanicService;
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 	
 	private static final Logger logger = Logger.getLogger(GarageServiceImpl.class);
 	private static final String INVALIDGARAGEID = "Invalid Garage Id";
@@ -57,7 +53,7 @@ public class GarageServiceImpl implements GarageService{
 		String passwordString = theMechanic.getName() + "123";
 		
 		theMechanic.setEmail(emailString);
-		theMechanic.setPassword(passwordEncoder.encode(passwordString));
+		theMechanic.setPassword(passwordString);
 		
 		garageOwner.ifPresent(theMechanic::setEmployer);
 		
@@ -97,7 +93,7 @@ public class GarageServiceImpl implements GarageService{
 			
 			Garage tempGarage = garageRepository.findByEmail(email).get(0);
 			
-			return (passwordEncoder.matches(password, tempGarage.getPassword())) ? tempGarage : null;
+			return (password.equals(tempGarage.getPassword())) ? tempGarage : null;
 			
 		}
 		

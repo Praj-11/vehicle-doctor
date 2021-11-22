@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.handson.springboot.vehicledoctor.repository.MechanicRepository;
@@ -30,8 +29,6 @@ public class MechanicServiceImpl implements MechanicService{
 	@Autowired
 	private SparePartService sparePartService;
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 	
 	@Override
 	public Long addMechanic(Mechanic theMechanic) {
@@ -46,7 +43,7 @@ public class MechanicServiceImpl implements MechanicService{
 			Mechanic tempMechanic = mechanicRepository.findByEmail(email).get(0);
 			logger.info("Mechanic Details: " + tempMechanic);
 	
-			if (passwordEncoder.matches(password, tempMechanic.getPassword())) {				
+			if (password.equals(tempMechanic.getPassword())) {				
 				return tempMechanic;
 			}
 		}
