@@ -2,7 +2,6 @@ package com.handson.springboot.vehicledoctor.enitity;
 
 import java.util.Set;
 
-import javax.annotation.Generated;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,7 +40,11 @@ public class Garage {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "employer")
 	private Set<Mechanic> mechanics;
+
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, mappedBy = "garage")
+	private Set<OrderTable> orders;
 	
+
 	public Long getId() {
 		return id;
 	}
@@ -98,7 +101,15 @@ public class Garage {
 		this.mechanics = mechanics;
 	}
 	
-	
+
+	public Set<OrderTable> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Set<OrderTable> orders) {
+		this.orders = orders;
+	}
+
 	@Override
 	public String toString() {
 		return "Garage [id=" + id + ", garageName=" + garageName + ", phoneNumber=" + phoneNumber + ", address="

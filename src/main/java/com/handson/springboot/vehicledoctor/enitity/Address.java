@@ -5,8 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -32,18 +30,6 @@ public class Address {
 	
 	@Column(name = "zip_code")
 	private String zipCode;
-
-//	@OneToOne
-//	@PrimaryKeyJoinColumn
-//	private Mechanic mechanic;
-//	
-//	public Mechanic getMechanic() {
-//		return mechanic;
-//	}
-//
-//	public void setMechanic(Mechanic mechanic) {
-//		this.mechanic = mechanic;
-//	}
 
 	public Long getId() {
 		return id;

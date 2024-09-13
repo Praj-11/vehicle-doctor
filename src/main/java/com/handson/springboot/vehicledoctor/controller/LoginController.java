@@ -10,6 +10,9 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.handson.springboot.vehicledoctor.enitity.Customer;
 import com.handson.springboot.vehicledoctor.enitity.Garage;
 import com.handson.springboot.vehicledoctor.enitity.Mechanic;
+
+import com.handson.springboot.vehicledoctor.exceptions.ApiRequestException;
+
 import com.handson.springboot.vehicledoctor.service.CustomerService;
 import com.handson.springboot.vehicledoctor.service.GarageService;
 import com.handson.springboot.vehicledoctor.service.MechanicService;
@@ -20,12 +23,19 @@ public class LoginController {
 
 	@Autowired
 	private GarageService garageService;
-	
-	@Autowired
+
 	private MechanicService mechanicService;
 	
 	@Autowired
 	private CustomerService customerService;
+
+	private CustomerService customerService;
+	
+	@Autowired
+	private MechanicService mechanicService;
+	
+	private static final String INVALIDLOGINCREDENTIAL = "Invalid Login Credentials";
+
 	
 	@GetMapping("/garage")
 	public RedirectView login(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
@@ -34,12 +44,39 @@ public class LoginController {
 				
 		if (tempGarage != null) {
 			
-			return new RedirectView("/api/garage/");
+			return new RedirectView("/api/garage/" + tempGarage.getId());
 		}else {
 			
-			System.err.println("Invalid Login Credentials");
+			throw new ApiRequestException(INVALIDLOGINCREDENTIAL);
 		}
-		return null;
+	}
+	
+	@GetMapping("/customer")
+	public RedirectView login1(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
+		
+		Customer tempCustomer = customerService.login(email, password); 
+				
+		if (tempCustomer != null) {
+			
+			return new RedirectView("/api/customer/" + tempCustomer.getId());
+		}else {
+
+			throw new ApiRequestException(INVALIDLOGINCREDENTIAL);
+		}
+	}
+	
+	@GetMapping("/mechanic")
+	public RedirectView login2(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
+		
+		Mechanic tempMechanic = mechanicService.login(email, password); 
+				
+		if (tempMechanic != null) {
+			
+			return new RedirectView("/api/mechanic/" + tempMechanic.getId());
+		}else {
+
+			throw new ApiRequestException(INVALIDLOGINCREDENTIAL);
+		}
 	}
 	
 	
